@@ -1,0 +1,17 @@
+<div class="hide-on-small-only">
+    <ul id="slide-out" class="sidenav sidenav-fixed white">
+        {% comment %}
+        <li><a href="#!">First Sidebar Link</a></li>
+        <li><a href="#!">Second Sidebar Link</a></li>
+        {% endcomment %}
+        <li class="no-padding">
+            <ul class="collapsible collapsible-accordion white">
+                <li>
+                    <a href="{% url 'check_in' %}" class="waves-effect">Check-In</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+</div>

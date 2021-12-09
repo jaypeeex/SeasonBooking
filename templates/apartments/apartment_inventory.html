@@ -1,0 +1,47 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+<div class="row">
+    <div class="col s12 m12">
+        <h4>Inventario de Departamento</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12">
+        <a href="{% url 'create_inventory_item' inventory_id=apartment.inventory.id %}" class="waves-effect waves-light btn">Agregar Articulo</a>
+    </div>
+</div>
+<table id="inventories_table" class="display">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Tamaño</th>
+        <th>Cantidad</th>
+        <th>Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in inventory_items %}
+    <tr>
+        <td>{{ row.item.name }}</td>
+        <td>{{ row.item.size }}</td>
+        <td>{{ row.quantity }}</td>
+        <td>
+            <a href="{% url 'delete_inventory_item' apartment_id=apartment.id inventory_item_id=row.id %}">
+                <i class="small material-icons blue-text text-darken-2 tooltipped table-actions" data-position="top"
+                   data-tooltip="Quitar del inventario">delete</i>
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock body_content %}
+{% block javascript %}
+<script>
+  $(document).ready(function(){
+    $('#apartments_table').DataTable();
+     $('div.dataTables_filter input').addClass('dt-search-input-materialize');
+  });
+
+</script>
+{% endblock %}

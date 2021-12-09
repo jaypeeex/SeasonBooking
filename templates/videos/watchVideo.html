@@ -1,0 +1,160 @@
+{% extends 'skeletons/main.html' %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col s10">
+            <video id="player" controls poster="{{ MEDIA_URL }}{{ video.imageFile }}">
+                <source src="{{ MEDIA_URL }}{{ video.videoFile }}" type="video/mp4">
+            </video>
+            <h1>{{ video.title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 l6">
+            {{ comment_form }}
+            <button id="comment-submit-btn" class="btn waves-effect waves-light" onclick="commentButtonClick()"
+                    name="action" autocomplete="off" disabled>Publicar comentario
+                <i class="material-icons right">send</i>
+            </button>
+            <div id="comment-submitting-spinner">
+                <div class="preloader-wrapper small active" style="float: left;">
+                    <div class="spinner-layer spinner-green-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12 l6">
+            <div id="comments-container">
+                {% for comment in comments %}
+                    <div class="row single-comment">
+                        <div class="col s12" style="position: relative">
+                            <b><a href="{% url 'view_profile' username=comment.user.username %}">{{ comment.user.username }} </a></b>
+                            <span class="comment-ago"><small><i>Hace {{ comment.created_at|timesince }}</i> </small></span>
+                            <br><br>
+                            {{ comment.comment }}
+                            <div style="position:absolute; right: 0; top: 0">
+                                <ul id="own-comment-dropdown" class="dropdown-content">
+                                    {% ifequal comment.user user %}
+                                        <li><span onclick="deleteCommentAjax(event, {{ comment.id }})"><i
+                                                class="material-icons action-icon delete-trash-icon"
+                                                style="float: left;">delete</i>Eliminar</span></li>
+                                    {% endifequal %}
+                                    <li><a href=""><i class="material-icons">flag</i>Reportar</a></li>
+                                </ul>
+                                <i class="material-icons dropdown-trigger"
+                                   data-target="own-comment-dropdown">settings</i>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock body_content %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            const player = new Plyr('#player', {
+                settings: ['captions', 'quality', 'speed', 'loop']
+            });
+
+            $("input[name='comment']").bind('keyup', function (e) {
+                if ($(this).val().length != 0)
+                    $('#comment-submit-btn').attr('disabled', false);
+                else
+                    $('#comment-submit-btn').attr('disabled', true);
+
+                if (e.keyCode === 13) { // 13 is enter key
+                    commentButtonClick();
+                }
+            });
+
+            if ($("input[name='comment']").val().length != 0)
+                $('#comment-submit-btn').attr('disabled', false);
+            else
+                $('#comment-submit-btn').attr('disabled', true);
+
+        });
+
+
+        {% if user.is_authenticated %}
+            function makeCommentAjax() {
+                $('#comment-submit-btn').prop("disabled", true);
+                $('#comment-submitting-spinner').show();
+
+                data = {'video_id': "{{ video.id }}", 'comment_content': $("input[name='comment']").val()};
+
+                $.ajax({
+                    headers: {"X-CSRFToken": '{{csrf_token}}'},
+                    type: "POST",
+                    url: "{% url 'make_comment' %}",
+                    data: data,
+                    datatype: 'json',
+                    success: function (response) {
+                        commentTemplateHtml = $('.single-comment-template:first').clone().html();
+                        commentTemplateHtml = commentTemplateHtml.replace('$commentContent', response.comment);
+                        commentTemplateHtml = commentTemplateHtml.replace('$username', '{{ user.username }}');
+                        commentTemplateHtml = commentTemplateHtml.replace('$userProfileUrl', "{% url 'view_profile' username=user.username %}");
+                        commentTemplateHtml = commentTemplateHtml.replace('$timeSince', response.timesince);
+                        commentTemplateHtml = commentTemplateHtml.replace('$commentId', response.id);
+
+                        $('#comments-container').prepend(commentTemplateHtml);
+
+                        $('#comment-submitting-spinner').hide();
+                        $('#{{ comment_form.comment.auto_id }}').val('');
+                    },
+                    error: function () {
+                        console.log('There was a problem while creating comment');
+                        $('#comment-submitting-spinner').hide();
+                    }
+                });
+            }
+
+            function deleteCommentAjax(e, commentId) {
+                data = {'comment_id': commentId}
+                $.ajax({
+                    headers: {"X-CSRFToken": '{{csrf_token}}'},
+                    type: "POST",
+                    url: "{% url 'delete_comment' %}",
+                    data: data,
+                    datatype: 'json',
+                    success: function (response) {
+                        e.target.closest(".single-comment").remove();
+                    },
+                    error: function () {
+                        console.log('There was a problem while deleting comment');
+                        $('#comment-submitting-spinner').hide();
+                    }
+                });
+            }
+        {% else %}
+            function modalLogin() {
+                $('.modal-login-required').modal('open');
+            }
+        {% endif %}
+
+        function commentButtonClick() {
+            {% if user.is_authenticated %}
+                makeCommentAjax();
+            {% else %}
+                modalLogin();
+            {% endif %}
+        }
+
+
+    </script>
+{% endblock %}

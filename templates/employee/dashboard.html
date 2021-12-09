@@ -1,0 +1,47 @@
+{% extends 'skeletons/employee.html' %}
+{% block body_content %}
+{% load static %}
+{% csrf_token %}
+    {% for apartment in data %}
+
+    <div class="col s12 m4 hide-on-small-only">
+        <div class="grid-single-apartment">
+            <div class="card">
+                <div class="card-image" style="overflow: hidden">
+                    <img src="{{MEDIA_URL}}{{apartment.apartment_image.imageFile}}">
+                    <span class="card-title">{{apartment.apartment.name}}</span>
+                </div>
+                <div class="card-content" style="overflow: hidden">
+                    <b><p>Precio por noche: ${{apartment.apartment.rate}}</p></b>
+                    <p>{{apartment.apartment.description}}</p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'book_apartment' apartment.apartment.id %}" class="waves-effect waves-light btn indigo darken-4">Ver
+                        más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s12 m4 show-on-small" style="display:none">
+        <div class="grid-single-apartment">
+            <div class="card">
+                <div class="card-image" style="overflow: hidden; height: 200px">
+                    <img src="{{MEDIA_URL}}{{apartment.apartment_image.imageFile}}">
+                    <span class="card-title">{{apartment.apartment.name}}</span>
+                </div>
+                <div class="card-content" style="overflow: hidden">
+                    <p>{{apartment.apartment.description}}</p>
+                </div>
+                <div class="card-action">
+                    <a href="{% url 'book_apartment' apartment.apartment.id %}" class="waves-effect waves-light btn indigo darken-4">Ver
+                        más</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock body_content %}
+    

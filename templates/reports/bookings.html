@@ -1,0 +1,145 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+{% if messages %}
+{% for message in messages %}
+<div class="row">
+    <div class="col s12 m12">
+        <div class="row">
+            <div class="alert {% if message.tags == 'success' %} alert-success {% elif message.tags == 'error' %} alert-danger {% endif %}"
+                 role="alert">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col s12 m12">
+        <h4>Generar Reportes de Reservas</h4>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col s12 m12">
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s6 m3">
+                    <select name="apartment_id" required>
+                        <option value="" disabled selected>Selecciona un departamento</option>
+                        {% for apartment in apartments %}
+                        <option value="{{apartment.id}}">{{apartment.name}}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Departmento</label>
+                </div>
+                <div class="input-field col s6 m3">
+                    <select name="tipo" id="tipo_reporte" required>
+                        <option value="" disabled selected>Selecciona un modo</option>
+                        <option value="1">Diario</option>
+                        <option value="2">Mensual</option>
+                        <option value="3">Anual</option>
+                    </select>
+                    <label>Tipo de reporte</label>
+                </div>
+                <div class="input-field col s6 m3" id="date-input-field" style="display: none">
+                    <input type="text" class="datepicker" id="report_date" name="report_date" required>
+                    <label>Fecha</label>
+                </div>
+                 <div class="input-field col s6 m3" id="month-field" style="display: none">
+                    <select id="report_month" name="report_month" required>
+                        <option value="" disabled selected>Selecciona un mes</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <label>Mes</label>
+                </div>
+                <div class="input-field col s6 m3" id="year-field" style="display: none">
+                    <select id="report_year" name="report_year" required>
+                        <option value="" disabled selected>Selecciona un año</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                    </select>
+                    <label>Año</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action">Generar reporte en PDF</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock body_content %}
+
+{% block javascript %}
+<script>
+     $(document).ready(function(){
+     $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
+    $('select').formSelect();
+
+    $( "form" ).submit(function( event ) {
+
+    });
+  });
+    $( "#tipo_reporte" ).change(function() {
+      switch($(this).val()) {
+          case '1':
+            $('#date-input-field').show();
+            $('#month-field').hide();
+            $('#report_month').attr('required', false);
+            $('#year-field').hide();
+            $('#report_year').attr('required', false);
+            break;
+          case '2':
+            $('#date-input-field').hide();
+            $('#report_date').attr('required', false);
+            $('#month-field').show();
+            $('#year-field').show();
+            break;
+          case '3':
+            $('#date-input-field').hide();
+            $('#report_date').attr('required', false);
+            $('#month-field').hide();
+            $('#report_month').attr('required', false);
+            $('#year-field').show();
+        }
+
+    });
+
+    datepickerOptions = {
+        maxDate: new Date(),
+        format: 'dd-mm-yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom","Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D","L", "M", "M", "J", "V", "S"],
+                cancel: 'Cancelar',
+                done: 'Confirmar'
+            },
+        yearRange: [new Date().getFullYear(),new Date().getFullYear()+1]
+    };
+
+    var datepickerElems = document.querySelectorAll('.datepicker');
+    var datepickerInstances = M.Datepicker.init(datepickerElems, datepickerOptions);
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'skeletons/employee.html' %}
+{% block body_content %}
+{% load static %}
+{% if messages %}
+{% for message in messages %}
+<div class="row">
+    <div class="col s12 m12">
+        <div class="row">
+            <div class="alert {% if message.tags == 'success' %} alert-success {% elif message.tags == 'error' %} alert-danger {% endif %}"
+                 role="alert">
+                {{ message }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col s12 m10 offset-m1">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="input-field col s6 m6">
+                    {{check_in_form.booking_id}}
+                    {{check_in_form.booking_id.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.guests_number}}
+                    {{check_in_form.guests_number.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.email}}
+                    {{check_in_form.email.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.phone}}
+                    {{check_in_form.phone.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.arrival_date}}
+                    {{check_in_form.arrival_date.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.departure_date}}
+                    {{check_in_form.departure_date.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.arrival_time}}
+                    {{check_in_form.arrival_time.label_tag}}
+                </div>
+                <div class="input-field col s6 m6">
+                    {{check_in_form.departure_time}}
+                    {{check_in_form.departure_time.label_tag}}
+                </div>
+                <div class="input-field col s12 m12">
+                    {{check_in_form.check_in_staff}}
+                    {{check_in_form.check_in_staff.label_tag}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action">Confirmar Ingreso
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+{% endblock body_content %}
+{% block javascript %}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      datepickerOptions = {
+        minDate: new Date(),
+        format: 'dd-mm-yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom","Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D","L", "M", "M", "J", "V", "S"],
+                cancel: 'Cancelar',
+                done: 'Confirmar'
+            },
+        yearRange: [new Date().getFullYear()]
+    };
+    var datepickerElems = document.querySelectorAll('.datepicker');
+    var datepickerInstances = M.Datepicker.init(datepickerElems, datepickerOptions);
+
+    timepickerOptions = {
+        twelveHour: false,
+        defaultTime: 'now'
+    };
+    var timepickerElems = document.querySelectorAll('.timepicker');
+    var timepickerInstances = M.Timepicker.init(timepickerElems, timepickerOptions);
+  });
+
+
+
+</script>
+
+{% endblock %}

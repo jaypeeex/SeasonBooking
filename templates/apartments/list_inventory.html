@@ -1,0 +1,33 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+    <table id="inventories_table" class="display" >
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in inventories %}
+        <tr>
+            <td>{{ f.name }}</td>
+            <td>{{ f.date }}</td>
+            <td>
+                <a href="{% url 'edit_inventory' f.id %}">
+                    <i class="small material-icons blue-text text-darken-2 tooltipped table-actions" data-position="top" data-tooltip="Editar Inventario">create</i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock body_content %}
+{% block javascript %}
+<script>
+  $(document).ready(function(){
+    $('#apartments_table').DataTable();
+     $('div.dataTables_filter input').addClass('dt-search-input-materialize');
+  });
+</script>
+{% endblock %}

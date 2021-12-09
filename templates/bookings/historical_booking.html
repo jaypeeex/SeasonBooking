@@ -1,0 +1,55 @@
+{% extends 'skeletons/customer.html' %}
+{% block body_content %}
+<div class="row">
+    <div class="col s12 m12" style="overflow-x: scroll;">
+        <table id="apartments_table" class="display">
+            <thead>
+            <tr>
+                <th>Código Reserva</th>
+                <th>Nombre Departamento</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Nº Servicios Extras</th>
+                <th>Monto Servicios Extras($)</th>
+                <th>Monto Total($)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in h_bookings %}
+            <tr>
+                <td>{{ b.0 }}</td>
+                <td>{{ b.1 }}</td>
+                <td>{{ b.2 }}</td>
+                <td>{{ b.3 }}</td>
+                <td>{{ b.4 }}</td>
+                <td>{{ b.5 }}</td>
+                <td>{{ b.6 }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock body_content %}
+{% block javascript %}
+<script>
+    dtOptions = {
+            "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+            },
+            "columns": [
+                null,
+                { "width": "20%" },
+                null,
+                null,
+                null
+              ]
+    };
+
+
+
+
+
+</script>
+{% endblock %}

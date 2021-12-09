@@ -1,0 +1,74 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+<style>
+    .dataTables_filter input { height: 30px !important}
+</style>
+<div class="row">
+    <div class="col s12 m12">
+        <h4>Lista de Departamentos</h4>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col s12 m12">
+        <table id="apartments_table" class="display">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Tarifa</th>
+                <th>Capacidad</th>
+                <th>Dirección</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for apartment in apartments %}
+            <tr>
+                <td>{{ apartment.name }}</td>
+                <td>{{ apartment.description }}</td>
+                <td>{{ apartment.rate }}</td>
+                <td>{{ apartment.capacity }}</td>
+                <td>{{ apartment.address }}</td>
+                <td>
+                    <a href="{% url 'edit_apartment' apartment.id %}">
+                        <i class="small material-icons blue-text text-darken-2 tooltipped table-actions"
+                           data-position="top" data-tooltip="Editar">create</i>
+                    </a>
+                    <a href="{% url 'apartment_extra_services' apartment.id %}">
+                        <i class="small material-icons blue-text text-darken-2 tooltipped table-actions"
+                           data-position="top" data-tooltip="Configurar servicios extra">library_add</i>
+                    </a>
+                    <a href="{% url 'apartment_inventory' apartment.id %}">
+                        <i class="small material-icons blue-text text-darken-2 tooltipped table-actions"
+                           data-position="top" data-tooltip="Inventario">business_center</i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock body_content %}
+{% block javascript %}
+<script>
+    dtOptions = {
+            "language": {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+            },
+            "bLengthChange": false,
+            "sScrollX": "100%",
+            "sScrollXInner": "110%",
+            "bScrollCollapse": true,
+            "fixedColumns":   {
+               "leftColumns": 1
+            }
+
+    };
+
+    $('#apartments_table').DataTable(dtOptions);
+
+
+</script>
+{% endblock %}

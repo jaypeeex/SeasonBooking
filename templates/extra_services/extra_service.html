@@ -1,0 +1,30 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+<div class="row">
+    <div class="col s12 m12">
+        <h4>Servicio  Adicional</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ extra_service_form }}
+            <br><br>
+            <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action">Confirmar
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+{% endblock body_content %}
+
+{% block javascript %}
+<script>
+    $('select').formSelect();
+
+</script>
+
+{% endblock %}

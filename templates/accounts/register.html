@@ -1,0 +1,25 @@
+{% extends 'skeletons/customer.html' %}
+
+{% block body_content %}
+<div class="row">
+    <form action="" method="post" autocomplete="off">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="row">
+            <div class="input-field col m4 offset-m4 s12">
+                {{field}}
+                {{field.label_tag}}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row">
+            <div class="col m4 offset-m4 s12">
+                <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action">Crear cuenta
+                    <i class="material-icons right">send</i>
+                </button>
+                {{ form.errors }}
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock body_content %}

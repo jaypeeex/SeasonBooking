@@ -1,0 +1,48 @@
+<div class="hide-on-small-only">
+<ul id="slide-out" class="sidenav sidenav-fixed white">
+    {% comment %}
+    <li><a href="#!">First Sidebar Link</a></li>
+    <li><a href="#!">Second Sidebar Link</a></li>
+    {% endcomment %}
+    <li class="no-padding white">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header">Departamentos<i class="material-icons">business</i></a>
+                <div class="collapsible-body white">
+                    <ul>
+                        <li><a href="{% url 'register_apartment' %}">Registrar departamento</a></li>
+                        <li><a href="{% url 'apartment_list' %}">Administrar departamentos</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="collapsible-header">Servicios adicionales<i class="material-icons">room_service</i></a>
+                <div class="collapsible-body white">
+                    <ul>
+                        <li><a href="{% url 'register_extra_service' %}">Registrar servicio adicional</a></li>
+                        <li><a href="{% url 'extra_services_list' %}">Administrar servicios adicionales</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="collapsible-header">Reportes<i class="material-icons">import_export</i></a>
+                <div class="collapsible-body white">
+                    <ul>
+                        <li><a href="{% url 'bookings_report' %}">Reporte de reservas</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="collapsible-header">Articulos de Departamentos<i class="material-icons">filter_frames</i></a>
+                <div class="collapsible-body white">
+                    <ul>
+                        <li><a href="{% url 'create-item' %}">Registrar Articulo</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+</div>

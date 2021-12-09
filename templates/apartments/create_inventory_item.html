@@ -1,0 +1,48 @@
+{% extends 'skeletons/admin.html' %}
+{% block body_content %}
+
+<form action="{% url 'create_inventory_item' inventory.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col s6">
+            <div class="row">
+                <div class="col s12">
+                    {{ form.inventory }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    {{ form.item.label_tag }}
+                    {{ form.item }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    {{ form.quantity.label_tag }}
+                    {{ form.quantity }}
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s2">
+            <button class="btn waves-effect waves-light" type="submit" name="action">Confirmar
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </div>
+</form>
+
+{% endblock body_content %}
+{% block javascript %}
+
+<script>
+    $(document).ready(function(){
+    $('select').formSelect();
+    $("select[required]").css({display: "block", height: 0, padding: 0, width: 0, position: 'absolute'});
+    });
+
+
+</script>
+{% endblock %}

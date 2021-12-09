@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body %}
+{% if user.is_authenticated %}
+
+{% include "components/admin/header/logged_in.html" %}
+{% include "components/admin/sidebar/sidebar.html" %}
+{% else %}
+
+{% include "components/header/logged_out.html" %}
+{% endif %}
+
+{% block style %}
+{% if user.is_authenticated %}
+<style>
+    main, footer {
+        padding-left: 300px;
+    }
+
+    @media only screen and (max-width : 992px) {
+        header, main, footer {
+            padding-left: 0;
+        }
+    }
+
+</style>
+{% endif %}
+{% endblock %}
+
+<main>
+
+    <div class="container">
+        {% block body_content %}
+        {% endblock body_content %}
+    </div>
+
+</main>
+{% endblock body %}
+{% block javascript %}
+<script>
+</script>
+{% endblock %}

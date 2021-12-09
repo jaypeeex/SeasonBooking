@@ -1,0 +1,21 @@
+<nav class="nav-extended indigo darken-4">
+    <div class="nav-wrapper container indigo darken-4">
+        {% load static %}
+        <a href="{% url 'index' %}" class="brand-logo">
+            <img src="{% static 'img/logobooking.png' %}" class="hide-on-small-only" style="height: 64px !important;padding-left: 30px;" alt="">
+            <img src="{% static 'img/logobooking.png' %}" class="show-on-small" style="height: 40px !important;margin-top:10px;padding-left: 30px;display:none;" alt="">
+        </a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+            <li><a href="{% url 'register' %}">Registrate!</a></li>
+        </ul>
+    </div>
+
+</nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a href="{% url 'register' %}">Registrate!</a></li>
+    <li><a href="{% url 'login' %}?next={{request.path}}">Iniciar sesión</a></li>
+</ul>
+

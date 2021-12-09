@@ -1,0 +1,42 @@
+<header class="indigo darken-4">
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="">Ver Perfil</a></li>
+        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+    </ul>
+    <div class="navbar-fixed indigo darken-4">
+        <nav>
+            <div class="nav-wrapper indigo darken-4">
+                <div class="row">
+                    <div class="col s3">
+                        <a href="{% url 'index' %}" class="brand-logo"><span class="material-icons"
+                                                                             style="font-size: 30px;">
+                book_online
+                </span>Season Booking</a>
+                    </div>
+                    <div class="col s4">
+                        {% comment %}
+                        <form action="{% url 'search_videos' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-field">
+                                <input id="search" type="search" name="search" required>
+                                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                                <i class="material-icons">close</i>
+                            </div>
+                        </form>
+                        {% endcomment %}
+                    </div>
+                    <div class="col s2">
+                        <a href="{% url 'register_apartment' %}">Registrar departamento</a>
+                    </div>
+
+                    <div class="col s3">
+                        <ul class="right hide-on-med-and-down">
+                            <li><a><i class="dropdown-trigger material-icons right" href="#!" data-target="dropdown1">dialpad</i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

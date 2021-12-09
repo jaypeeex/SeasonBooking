@@ -1,0 +1,316 @@
+{% extends 'skeletons/customer.html' %}
+{% block body_content %}
+<style>
+    @font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://fonts.gstatic.com/s/materialicons/v18/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.middle-indicator{
+   position:absolute;
+   top:50%;
+   }
+  .middle-indicator-text{
+   font-size: 4.2rem;
+  }
+  a.middle-indicator-text{
+    color:white !important;
+  }
+.content-indicator{
+    width: 64px;
+    height: 64px;
+    background: none;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+  }
+    .indicators{
+  	visibility: hidden;
+  }
+
+
+</style>
+
+<div class="row">
+    <div class="col m7 s12 ">
+        <div class="card">
+            <div class="card-image">
+                <div class="carousel carousel-slider center " data-indicators="true" style="height: 500px;">
+                    <div class="carousel-fixed-item center middle-indicator">
+                        <div class="left">
+                            <a href="Previo"
+                               class="movePrevCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
+                                    class="material-icons left  middle-indicator-text">chevron_left</i></a>
+                        </div>
+
+                        <div class="right">
+                            <a href="Siguiente"
+                               class=" moveNextCarousel middle-indicator-text waves-effect waves-light content-indicator"><i
+                                    class="material-icons right middle-indicator-text">chevron_right</i></a>
+                        </div>
+                    </div>
+                    <div class="carousel-item white-text" href="#one!"
+                         style="background-image: url('{{MEDIA_URL}}{{apartment_images.0.imageFile}}'); background-size: cover; background-position: center"></div>
+                    <div class="carousel-item white-text" href="#one!"
+                         style="background-image: url('{{MEDIA_URL}}{{apartment_images.1.imageFile}}'); background-size: cover; background-position: center"></div>
+                    <div class="carousel-item white-text" href="#one!"
+                         style="background-image: url('{{MEDIA_URL}}{{apartment_images.2.imageFile}}'); background-size: cover; background-position: center"></div>
+                    <div class="carousel-item white-text" href="#one!"
+                         style="background-image: url('{{MEDIA_URL}}{{apartment_images.3.imageFile}}'); background-size: cover; background-position: center"></div>
+                </div>
+                <!--<img src="{{MEDIA_URL}}{{apartment_images.0.imageFile}}">-->
+                <span class="card-title" style="width: 100%; "><b>{{apartment.name}}</b></span>
+            </div>
+            <div class="card-content">
+                <p>{{apartment.description}}</p>
+            </div>
+        </div>
+    </div>
+    <form action="{% url 'booking_confirm' apartment.id %}" method="POST">
+        {% csrf_token %}
+
+        <div class="col m5 s12 ">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input type="text" class="datepicker" placeholder="-" name="check-in-date" id="check-in-date"
+                           required class="validate">
+                    <label for="check-in-date">Fecha de llegada</label>
+                </div>
+                <div class="input-field col s6">
+                    <input type="text" class="datepicker" placeholder="-" name="check-out-date" id="check-out-date"
+                           required>
+                    <label for="check-in-date">Fecha de salida</label>
+                </div>
+            </div>
+            <div class="row" style="position: relative;">
+                <div class="col s4">
+                    <label for="number-guests">Cantidad de huéspedes</label>
+                    <select name="number-guests" id="number-guests">
+                        <option value="">0</option>
+                        {% for i in loop_times %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col s6">
+                    {% comment %}
+                    <button class="btn waves-effect waves-light indigo darken-4" id="check-availability"
+                            onclick="checkAvailabilityAjax()">Ver disponibilidad
+                        <i class="material-icons right">send</i>
+                    </button>
+                    {% endcomment %}
+                    <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action" style="position: absolute;top: 50%; transform: translateY(-50%);">Reservar
+                        <i class="material-icons right">send</i>
+                    </button>
+                    <div id="check-availability-spinner">
+                        <div class="preloader-wrapper small active" style="float: left;">
+                            <div class="spinner-layer spinner-green-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</form>
+
+
+</div>
+
+
+{% endblock body_content %}
+
+{% block javascript %}
+<script>
+    $( document ).ready(function() {
+        $('#check-in-date').val('');
+        $('#check-out-date').val('');
+
+         $('.carousel.carousel-slider').carousel({
+            fullWidth: true,
+            indicators: false
+          });
+
+          // move next carousel
+           $('.moveNextCarousel').click(function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              $('.carousel').carousel('next');
+           });
+
+           // move prev carousel
+           $('.movePrevCarousel').click(function(e){
+              e.preventDefault();
+              e.stopPropagation();
+              $('.carousel').carousel('prev');
+           });
+
+
+    });
+
+    var datepickerElems;
+    var check_in_instance;
+    var check_out_instance;
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+   var unavailable_dates = []
+
+    {% for i in unavailable_dates %}
+    singleDate = {
+        year: "{{i|date:"Y"}}",
+        month: "{{i|date:"m"}}",
+        day: "{{i|date:"d"}}"
+    };
+
+    unavailable_dates.push(singleDate);
+    {% endfor %}
+
+    datepickerOptions = {
+        minDate: new Date(),
+        format: 'dd-mm-yyyy',
+            i18n: {
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic"],
+                weekdays: ["Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                weekdaysShort: ["Dom","Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                weekdaysAbbrev: ["D","L", "M", "M", "J", "V", "S"],
+                cancel: 'Cancelar',
+                done: 'Confirmar'
+            },
+        yearRange: [new Date().getFullYear(),new Date().getFullYear()+1],
+        disableDayFn: function(date) {
+            var disable = false;
+            unavailable_dates.forEach(function(valor, indice, array){
+                disabledDate = new Date(valor["year"],valor["month"]-1,valor["day"]);
+                if(date.getTime() === disabledDate.getTime()){
+                    disable = true;
+                }
+            });
+
+            return disable;
+        }
+    };
+
+    var datepickerElems = document.querySelectorAll('.datepicker');
+    var datepickerInstances = M.Datepicker.init(datepickerElems, datepickerOptions);
+
+    var selectElems = document.querySelectorAll('select');
+    var selectInstances = M.FormSelect.init(selectElems, {});
+
+    check_in_instance = M.Datepicker.getInstance(datepickerElems[0]);
+    check_out_instance = M.Datepicker.getInstance(datepickerElems[1]);
+
+  });
+
+
+     function checkAvailabilityAjax() {
+            $('#check-availability').prop("disabled", true);
+            $('#check-availability-spinner').show();
+
+            data = {
+                'check_in_date': $("input[name='check-in-date']").val(),
+                'check_out_date': $("input[name='check-out-date']").val(),
+                'number_guests': $("select[name='number-guests']").val()
+            };
+
+            $.ajax({
+                headers: {"X-CSRFToken": '{{csrf_token}}'},
+                type: "POST",
+                url: "{% url 'check_availability' %}",
+                data: data,
+                datatype: 'json',
+                success: function (response) {
+                    $('#check-availability-spinner').hide();
+                },
+                error: function () {
+                    $('#comment-submitting-spinner').hide();
+                }
+            });
+     }
+    $( "form" ).submit(function( event ) {
+        event.preventDefault();
+        {% if user.is_authenticated %}
+            check_in_date= check_in_instance.date;
+            check_out_date= check_out_instance.date;
+            var number_guests = $('#number-guests').val();
+
+            if(number_guests=="" || number_guests<1){
+                Swal.fire({
+                  title: 'Atención',
+                  text: 'Seleccione la cantidad de huéspedes',
+                  icon: 'warning',
+                  confirmButtonText: 'Aceptar'
+                    });
+            }
+            else if(check_in_date.getTime() === check_out_date.getTime()) {
+                Swal.fire({
+                  title: 'Atención',
+                  text: 'La fecha de salida no puede ser igual a la fecha de ingreso',
+                  icon: 'warning',
+                  confirmButtonText: 'Aceptar'
+                    });
+            }
+            else {
+
+                if(check_out_date<check_in_date){
+                     Swal.fire({
+                  title: 'Atención',
+                  text: 'La fecha de salida no puede ser anterior a la de llegada',
+                  icon: 'warning',
+                  confirmButtonText: 'Aceptar'
+                    });
+                }
+                else {
+                    $(this).unbind('submit').submit();
+                }
+
+            }
+        {% else %}
+                $('.modal-login-required').modal('open');
+        {% endif %}
+
+
+
+
+
+
+    });
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

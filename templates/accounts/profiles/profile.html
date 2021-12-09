@@ -1,0 +1,17 @@
+{% extends 'skeletons/customer.html' %}
+{% block body_content %}
+    {% for video in videos %}
+        <div class="row">
+            <div class="col s12">
+                <div class="row">
+                    <div class="col s3">
+                        <a href="/video/{{video.id}}"><img class="responsive-img" src="{{MEDIA_URL}}{{video.imageFile}}"></a>
+                    </div>
+                    <div class="col s9">
+                        <a class="video-title" href="/video/{{video.id}}"><b><p>{{video.title}}</p></b></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

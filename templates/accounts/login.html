@@ -1,0 +1,43 @@
+{% extends 'skeletons/customer.html' %}
+
+{% block body_content %}
+<div class="row mt-5">
+    <div class="col s12 m12">
+        <form action="" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="row">
+                <div class="col s12 m4 offset-m4">
+                    {{ field.label }}
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="row">
+                <div class="col s4 offset-s4">
+                    <button class="btn waves-effect waves-light indigo darken-4" type="submit" name="action">Iniciar sesión
+                        <i class="material-icons right">send</i>
+                    </button>
+
+                </div>
+            </div>
+
+            {% if messages %}
+            {% for message in messages %}
+            <div class="row">
+                <div class="col s4 offset-s4 m4 offset-m4">
+                    <div class="row">
+                        <div class="alert {% if message.tags == 'success' %} alert-success {% elif message.tags == 'error' %} alert-danger {% endif %}"
+                             role="alert">
+                            {{ message }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock body_content %}

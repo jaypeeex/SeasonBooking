@@ -1,0 +1,98 @@
+{% comment %}
+<header>
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+    </ul>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper ">
+                <div class="row">
+                    <div class="col s3">
+                        <a href="{% url 'dashboard' %}" class="brand-logo"><span class="material-icons"
+                                                                                 style="font-size: 30px;">
+                book_online
+                </span>Season Booking</a>
+                    </div>
+                    <div class="col s4">
+
+                    </div>
+                    <div class="col s2">
+                        <a href="{% url 'register_apartment' %}">Registrar departamento</a>
+                    </div>
+
+                    <div class="col s3">
+                        <ul class="right hide-on-med-and-down">
+                            <li><a><i class="dropdown-trigger material-icons right" href="#!" data-target="dropdown1">arrow_drop_down</i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+{% endcomment %}
+
+<ul id="dropdown1" class="dropdown-content">
+    <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+</ul>
+<div class="navbar-fixed nav-extended ">
+    <nav>
+        <div class="nav-wrapper indigo darken-4">
+            {% load static %}
+            <a href="{% url 'dashboard' %}" class="brand-logo">
+                <img src="{% static 'img/logobooking.png' %}" class="hide-on-small-only" style="height: 64px !important;padding-left:30px;"
+                     alt="">
+                <img src="{% static 'img/logobooking.png' %}" class="show-on-small"
+                     style="height: 40px !important;margin-top:10px;padding-left:30px;display:none;" alt="">
+            </a>
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a><i class="dropdown-trigger material-icons right" href="#!"
+                          data-target="dropdown1">dialpad</i></a></li>
+            </ul>
+        </div>
+
+    </nav>
+</div>
+
+<ul class="sidenav collapsible collapsible-accordion" id="mobile-demo">
+
+    <li><a href="{% url 'logout' %}">Cerrar sesión</a></a>
+    </li>
+    <li>
+        <a class="collapsible-header">Departamentos<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+            <ul>
+                <li><a href="{% url 'register_apartment' %}">Registrar departamento</a></li>
+                <li><a href="{% url 'apartment_list' %}">Administrar departamentos</a></li>
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a class="collapsible-header">Servicios adicionales<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+            <ul>
+                <li><a href="{% url 'register_extra_service' %}">Registrar servicio adicional</a></li>
+                <li><a href="{% url 'extra_services_list' %}">Administrar servicios adicionales</a></li>
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a class="collapsible-header">Reportes<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+            <ul>
+                <li><a href="{% url 'bookings_report' %}">Reporte de reservas</a></li>
+            </ul>
+        </div>
+    </li>
+    <li>
+        <a class="collapsible-header">Articulos de Departamentos<i class="material-icons">arrow_drop_down</i></a>
+        <div class="collapsible-body">
+            <ul>
+                <li><a href="{% url 'create-item' %}">Registrar Articulo</a></li>
+            </ul>
+        </div>
+    </li>
+</ul>
+
